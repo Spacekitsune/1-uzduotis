@@ -32,17 +32,17 @@
 
         @endif
 
-        <a class="btn btn-primary" href="{{route('clients.create')}}">Create new client</a>
+        <a class="btn btn-primary mb-5" href="{{route('clients.create')}}">Create new client</a>
 
-        <table class="table table-striped">
+        <table class="table table-striped table-bordered">
             <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Surname</th>
-                <th>Username</th>
-                <th>Company_id</th>
-                <th>Img_url</th>
-                <th>Actions</th>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Surname</th>
+                <th scope="col">Username</th>
+                <th scope="col">Company id</th>
+                <th scope="col">Img url</th>
+                <th scope="col">Actions</th>
             </tr>
 
             <!--blade sintaksė -->
@@ -55,15 +55,15 @@
                 <td>{{$client->username}}</td>
                 <td>{{$client->company_id}}</td>
                 <td>{{$client->image_url}}</td>
-                <td >
-                    <a class="btn btn-primary" href="{{route('clients.show', [$client])}}">Show</a>
-                    <a class="btn btn-success" href="{{route('clients.edit', [$client])}}">Edit</a>
+                <td class="d-flex">
+                    <a class="d-inline p-2 btn btn-primary" href="{{route('clients.show', [$client])}}">Show</a>
+                    <a class="d-inline p-2 btn btn-success" href="{{route('clients.edit', [$client])}}">Edit</a>
 
-                    <form action="{{route('client.destroy', [$client])}}" method="POST">
+                    <form action="{{route('client.destroy', [$client])}}" method="POST" >
                         @csrf
-                        <button class="btn btn-danger" type="submit">Delete</button>
+                        <button class="d-inline p-2 btn btn-danger" type="submit">Delete</button>
                     </form>
-
+                    
 
                 </td>
             </tr>
