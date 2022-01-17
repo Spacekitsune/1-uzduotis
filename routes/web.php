@@ -41,3 +41,23 @@ Route::prefix('clients')->group(function() {
     
 
 });
+
+//Company
+Route::prefix('companies')->group(function() {
+    
+    Route::get('','App\Http\Controllers\CompanyController@index')->name('companies.index');
+
+    Route::get('create','App\Http\Controllers\CompanyController@create')->name('companies.create');
+
+    Route::post('store','App\Http\Controllers\CompanyController@store')->name('company.store');
+
+    Route::get('edit/{company}','App\Http\Controllers\CompanyController@edit')->name('companies.edit');
+
+    Route::post('update/{company}','App\Http\Controllers\CompanyController@update')->name('company.update');
+
+    Route::post('destroy/{company}','App\Http\Controllers\CompanyController@destroy')->name('company.destroy');
+
+    Route::get('show/{company}','App\Http\Controllers\CompanyController@show')->name('companies.show');
+    
+
+});
