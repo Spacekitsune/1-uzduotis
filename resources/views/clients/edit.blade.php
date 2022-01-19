@@ -31,7 +31,16 @@
     First Name:<input type="text" name="client_name" value="{{$client->name}}"> </br>
     Last Name:<input type="text" name="client_surname" value="{{$client->surname}}"> </br>
     Username:<input type="text" name="client_username" value="{{$client->username}}"> </br>
-    Company ID:<input type="number" name="client_company_id" value="{{$client->company_id}}"> </br>
+    Company ID:
+    <select name="client_company_id" class="form-control form-select">        
+        @foreach ($select_values as $company)
+            @if ($company->id == $client->company_id)
+                <option value="{{$company->id}}" selected>{{$company->name}}</option>
+            @else
+            <option value="{{$company->id}}"> {{$company->name}} </option>
+            @endif
+        @endforeach       
+    </select></br>
     IMG: <input type="text" name="client_img_url" value="{{$client->image_url}}"> </br>
 
     <!-- apsauga nuo formos patvirtinimo už puslapio ribų -->
