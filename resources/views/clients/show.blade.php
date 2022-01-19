@@ -39,7 +39,7 @@
 
         <form action="{{route('client.destroy', [$client])}}" method="POST">
             @csrf
-            <button class="btn btn-danger type="submit">Delete</button>
+            <button class="btn btn-danger" type="submit">Delete</button>
         </form>
 
     </div>

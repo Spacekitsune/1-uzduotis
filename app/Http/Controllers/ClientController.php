@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Models\Company;
 use App\Http\Requests\StoreClientRequest;
 use App\Http\Requests\UpdateClientRequest;
 use Illuminate\Http\Request;
@@ -27,7 +28,9 @@ class ClientController extends Controller
      */
     public function create()
     {
-        return view('clients.create');
+        $select_values = Company::all();
+
+        return view('clients.create', ['select_values'=>$select_values]);
     }
 
     /**
@@ -68,8 +71,10 @@ class ClientController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Client $client)
+
     {
-        return view('clients.edit', ['client'=>$client]);
+        $select_values = Company::all();
+        return view('clients.edit', ['client'=>$client], ['select_values'=>$select_values] );
     }
 
     /**
