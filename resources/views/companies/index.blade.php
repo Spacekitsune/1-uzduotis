@@ -26,6 +26,14 @@
 
         <h1>Index companies</h1>
 
+        @if (session()->has('error_message'))
+        <div class="alert alert-danger">Delete is not possible while company has clients.</div>
+        @endif
+
+        @if (session()->has('success_message'))
+        <div class="alert alert-success">Company was deleted.</div>
+        @endif
+
         @if (count($companies)== 0)
 
         <p>There are no companies</p>
@@ -50,8 +58,8 @@
                 <td>{{$company->name}}</td>
                 <td>{{$company->type}}</td>
                 <td>{{$company->description}}</td>
-        
-                <td >
+
+                <td>
                     <a class="btn btn-primary" href="{{route('companies.show', [$company])}}">Show</a>
                     <a class="btn btn-success" href="{{route('companies.edit', [$company])}}">Edit</a>
 

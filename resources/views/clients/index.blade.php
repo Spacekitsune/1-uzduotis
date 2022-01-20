@@ -53,7 +53,8 @@
                 <td>{{$client->name}}</td>
                 <td>{{$client->surname}}</td>
                 <td>{{$client->username}}</td>
-                <td>{{$client->company_id}}</td>
+                <!-- <td>{{$client->company_id}}</td> -->
+                <td>{{$client->clientCompany->name}}</td>
                 <td>{{$client->image_url}}</td>
                 <td class="d-flex">
                     <a class="d-inline p-2 btn btn-primary" href="{{route('clients.show', [$client])}}">Show</a>

@@ -21,34 +21,63 @@
 </head>
 
 <body>
-<h1>Show  company</h1>
-
-<table>
-    <tr>
-    <th>ID</th>
-    <th>Name</th>
-    <th>Type</th>
-    <th>Description</th>
-    
-    </tr>
+    <h1>Show company</h1>
 
 
-    <tr>
-        <td>{{$company->id}}</td>
-        <td>{{$company->name}}</td>
-        <td>{{$company->type}}</td>
-        <td>{{$company->description}}</td>
-    
-    </tr>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+
+        </tr>
 
 
-</table> 
+        <tr>
+            <td>{{$company->id}}</td>
+            <td>{{$company->name}}</td>
+            <td>{{$company->type}}</td>
+            <td>{{$company->description}}</td>
 
-<form action="{{route('company.destroy', [$company])}}" method="POST">
-                @csrf
-                <button type="submit">Delete</button>
-            </form>
+        </tr>
 
-            </body>
+
+    </table>
+
+    @if (count($company->companyClients)==0)
+    <p>The are no clients</p>
+    @else
+    <table class="table table-stiped">
+        <tr>
+            <th>Client ID</th>
+            <th>Client Name</th>
+            <th>Client Surname</th>
+            <th>Actions</th>
+        </tr>
+        @foreach ($company->companyClients as $client)
+        <tr>
+            <td>{{$client->id}}</td>
+            <td>{{$client->name}}</td>
+            <td>{{$client->surname}}</td>
+            <td>
+                <form action="{{route('client.destroy', [$client])}}" method="post">
+                    @csrf
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+
+        </tr>
+        @endforeach
+    </table>
+    @endif
+
+    <form action="{{route('company.destroy', [$company])}}" method="POST">
+        @csrf
+        <button type="submit">Delete</button>
+    </form>
+
+</body>
 
 </html>

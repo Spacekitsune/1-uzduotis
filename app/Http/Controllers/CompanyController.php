@@ -17,7 +17,7 @@ class CompanyController extends Controller
     public function index()
     {
         $companies = Company::all();
-        return view('companies.index' , ['companies' => $companies]);
+        return view('companies.index', ['companies' => $companies]);
     }
 
     /**
@@ -39,10 +39,10 @@ class CompanyController extends Controller
     public function store(Request $request)
     {
         $company = new Company;
-        $company->name = $request->company_name; 
+        $company->name = $request->company_name;
         $company->type = $request->company_type;
         $company->description = $request->company_description;
-    
+
 
         $company->save();
 
@@ -57,7 +57,7 @@ class CompanyController extends Controller
      */
     public function show(Company $company)
     {
-        return view('companies.show', ['company'=>$company]);
+        return view('companies.show', ['company' => $company]);
     }
 
     /**
@@ -68,7 +68,7 @@ class CompanyController extends Controller
      */
     public function edit(Company $company)
     {
-        return view('companies.edit', ['company'=>$company]);
+        return view('companies.edit', ['company' => $company]);
     }
 
     /**
@@ -97,7 +97,12 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company)
     {
-        $company->delete();
-        return redirect()->route('companies.index');
+        $clients = $company->companyClients;
+        if (count($clients) != 0) {
+            return redirect()->route('companies.index')->with('error_message', 'Delete is not possible while company has clients.');
+        } 
+            $company->delete();
+            return redirect()->route('companies.index')->with('success_message', 'Company was deleted.');
+        
     }
 }

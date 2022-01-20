@@ -14,13 +14,25 @@ class CreateClientsTable extends Migration
     public function up()
     {
         Schema::create('clients', function (Blueprint $table) {
+            //             ID
+            // name(string)
+            // surname(string)
+            // username(string)
+            // company_id(bigInt) - skaiciu
+            // image_url(string)
             $table->id();
-
-            $table->string('name');
+            $table->string('name'); // 255
             $table->string('surname');
             $table->string('username');
-            $table->bigInteger('company_id');
-            $table->string('image_url');
+
+            // $table->bigInteger('company_id'); //signed gali ir neigiamos -5
+            
+            $table->unsignedBigInteger('company_id'); // unsigned 1 teigiami skaiciai ....
+            $table->foreign('company_id')->references('id')->on('companies');
+            
+            
+            $table->string('image_url', 300);
+
 
             $table->timestamps();
         });
