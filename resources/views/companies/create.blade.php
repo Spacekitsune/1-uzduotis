@@ -3,7 +3,12 @@
 <form action="{{ route('company.store') }}" method="POST">
 
     Name:<input type="text" name="company_name"> </br>
-    Type:<input type="text" name="company_type"> </br>
+    type: <select name="company_type_id" class="form-control form-select">        
+        @foreach ($select_values as $type)
+            <option value="{{$type->id}}"> {{$type->name}} </option>
+        
+        @endforeach       
+    </select></br>
     Description:<input type="text" name="company_description"> </br>
 
     <!-- apsauga nuo formos patvirtinimo už puslapio ribų -->

@@ -27,7 +27,16 @@
 <form action="{{ route('company.update', [$company]) }}" method="POST">
 
     Name:<input type="text" name="company_name" value="{{$company->name}}"> </br>
-    Type:<input type="text" name="company_type" value="{{$company->type}}"> </br>
+    Type:
+    <select name="company_type_id" class="form-control form-select">        
+        @foreach ($select_values as $type)
+            @if ($type->id == $company->type_id)
+                <option value="{{$type->id}}" selected>{{$type->name}}</option>
+            @else
+            <option value="{{$type->id}}"> {{$type->name}} </option>
+            @endif
+        @endforeach       
+    </select></br>
     Description:<input type="text" name="company_description" value="{{$company->description}}"> </br>
     
 

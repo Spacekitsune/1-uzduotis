@@ -48,6 +48,7 @@
                 <th>Name</th>
                 <th>Type</th>
                 <th>Description</th>
+                <th>Clients</th>
                 <th>Action</th>
             </tr>
 
@@ -59,6 +60,7 @@
                 <td>{{$company->name}}</td>
                 <td>{{$company->typeCompany->short_name}}</td>
                 <td>{{$company->description}}</td>
+                <td>{{count($company->companyClients)}}</td>
 
                 <td>
                     <a class="btn btn-primary" href="{{route('companies.show', [$company])}}">Show</a>

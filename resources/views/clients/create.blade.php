@@ -31,7 +31,7 @@
     Company ID: 
     <select name="client_company_id" class="form-control form-select">        
         @foreach ($select_values as $company)
-            <option value="{{$company->id}}"> {{$company->name}} </option>
+            <option value="{{$company->id}}"> {{$company->name}}</option>
         
         @endforeach       
     </select></br>
