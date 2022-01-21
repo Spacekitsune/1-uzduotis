@@ -59,7 +59,7 @@
                 <td>{{$company->id}}</td>
                 <td>{{$company->name}}</td>
                 <td>{{$company->typeCompany->short_name}}</td>
-                <td>{{$company->description}}</td>
+                <td>{!!$company->description!!}</td>
                 <td>{{count($company->companyClients)}}</td>
 
                 <td>

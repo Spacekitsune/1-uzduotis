@@ -11,7 +11,9 @@
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -38,7 +40,7 @@
         <tr>
             <td>{{$company->id}}</td>
             <td>{{$company->name}}</td>
-            <td>{{$company->type}}</td>
+            <td>{{$company->typeCompany->name}}</td>
             <td>{{$company->description}}</td>
 
         </tr>
@@ -47,11 +49,12 @@
     </table>
 
     <div class="container">
+        <div class="row">
 
-        @if (count($company->companyClients)==0)
-        <p>The are no clients</p>
-        @else
-        <!-- <table class="table table-stiped">
+            @if (count($company->companyClients)==0)
+            <p>The are no clients</p>
+            @else
+            <!-- <table class="table table-stiped">
         <tr>
             <th>Client ID</th>
             <th>Client Name</th>
@@ -59,8 +62,8 @@
             <th>Actions</th>
         </tr> -->
 
-        @foreach ($company->companyClients as $client)
-        <!-- <tr>
+            @foreach ($company->companyClients as $client)
+            <!-- <tr>
             <td>{{$client->id}}</td>
             <td>{{$client->name}}</td>
             <td>{{$client->surname}}</td>
@@ -72,26 +75,27 @@
             </td>
 
         </tr> -->
-        <div class="col card" style="width: 6rem;">
-            <img class="card-img-top" src="{{$client->image_url}}" alt="Card image cap" width="200px">
-            <div class="card-body">
-                <h3 class="card-title">{{$client->name}} {{$client->surname}}</h5>
-                    <p class="card-text">ID: {{$client->id}}</p>
-                    <form action="{{route('client.destroy', [$client])}}" method="post">
-                        @csrf
-                        <button type="submit">Delete</button>
-                    </form>
+            <div class="col-sm card" style="width: 12rem;">
+                <img class="card-img-top" src="{{$client->image_url}}" alt="Card image cap" width="200px">
+                <div class="card-body">
+                    <h3 class="card-title">{{$client->name}} {{$client->surname}}</h5>
+                        <p class="card-text">ID: {{$client->id}}</p>
+                        <form action="{{route('client.destroy', [$client])}}" method="post">
+                            @csrf
+                            <button class="btn btn-danger" type="submit">Delete</button>
+                        </form>
+                </div>
             </div>
+            @endforeach
+            <!-- </table> -->
+
+            @endif
+
+            <form action="{{route('company.destroy', [$company])}}" method="POST">
+                @csrf
+                <button type="submit">Delete</button>
+            </form>
         </div>
-        @endforeach
-        <!-- </table> -->
-
-        @endif
-
-        <form action="{{route('company.destroy', [$company])}}" method="POST">
-            @csrf
-            <button type="submit">Delete</button>
-        </form>
     </div>
 </body>
 
