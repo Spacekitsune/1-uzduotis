@@ -21,7 +21,7 @@
 </head>
 
 <body>
-    <h1>Show company</h1>
+    <h1>Show type</h1>
 
 
 
@@ -29,17 +29,17 @@
         <tr>
             <th>ID</th>
             <th>Name</th>
-            <th>Type</th>
+            <th>Short name</th>
             <th>Description</th>
 
         </tr>
 
 
         <tr>
-            <td>{{$company->id}}</td>
-            <td>{{$company->name}}</td>
-            <td>{{$company->type}}</td>
-            <td>{{$company->description}}</td>
+            <td>{{$type->id}}</td>
+            <td>{{$type->name}}</td>
+            <td>{{$type->short_name}}</td>
+            <td>{{$type->description}}</td>
 
         </tr>
 
@@ -48,47 +48,37 @@
 
     <div class="container">
 
-        @if (count($company->companyClients)==0)
-        <p>The are no clients</p>
+        @if (count($type->typeCompanies)==0)
+        <p>The are no companies</p>
         @else
-        <!-- <table class="table table-stiped">
+        <table class="table table-stiped">
         <tr>
-            <th>Client ID</th>
-            <th>Client Name</th>
-            <th>Client Surname</th>
+            <th>Company ID</th>
+            <th>Company Name</th>
+            <th>Company description</th>
             <th>Actions</th>
-        </tr> -->
+        </tr>
 
-        @foreach ($company->companyClients as $client)
-        <!-- <tr>
-            <td>{{$client->id}}</td>
-            <td>{{$client->name}}</td>
-            <td>{{$client->surname}}</td>
+        @foreach ($type->typeCompanies as $company)
+        <tr>
+            <td>{{$company->id}}</td>
+            <td>{{$company->name}}</td>
+            <td>{{$company->description}}</td>
             <td>
-                <form action="{{route('client.destroy', [$client])}}" method="post">
+                <form action="{{route('company.destroy', [$company])}}" method="post">
                     @csrf
                     <button type="submit">Delete</button>
                 </form>
             </td>
 
-        </tr> -->
-        <div class="col card" style="width: 6rem;">
-            <img class="card-img-top" src="{{$client->image_url}}" alt="Card image cap" width="200px">
-            <div class="card-body">
-                <h3 class="card-title">{{$client->name}} {{$client->surname}}</h5>
-                    <p class="card-text">ID: {{$client->id}}</p>
-                    <form action="{{route('client.destroy', [$client])}}" method="post">
-                        @csrf
-                        <button type="submit">Delete</button>
-                    </form>
-            </div>
-        </div>
+        </tr>
+        
         @endforeach
-        <!-- </table> -->
+        </table>
 
         @endif
 
-        <form action="{{route('company.destroy', [$company])}}" method="POST">
+        <form action="{{route('type.destroy', [$type])}}" method="POST">
             @csrf
             <button type="submit">Delete</button>
         </form>

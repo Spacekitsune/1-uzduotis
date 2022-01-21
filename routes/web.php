@@ -61,3 +61,22 @@ Route::prefix('companies')->group(function() {
     
 
 });
+
+Route::prefix('types')->group(function() {
+    
+    Route::get('','App\Http\Controllers\TypeController@index')->name('types.index');
+
+    Route::get('create','App\Http\Controllers\TypeController@create')->name('types.create');
+
+    Route::post('store','App\Http\Controllers\TypeController@store')->name('type.store');
+
+    Route::get('edit/{type}','App\Http\Controllers\TypeController@edit')->name('types.edit');
+
+    Route::post('update/{type}','App\Http\Controllers\TypeController@update')->name('type.update');
+
+    Route::post('destroy/{type}','App\Http\Controllers\TypeController@destroy')->name('type.destroy');
+
+    Route::get('show/{type}','App\Http\Controllers\TypeController@show')->name('types.show');
+    
+
+});
