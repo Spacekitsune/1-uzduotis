@@ -1,66 +1,78 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+Laravel projekto k?rimas:
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+1. Terminale: composer create-project laravel/laravel projekto-pavadinimas (sukuria nauj? laravel projekt?);
+2. Terminale: cd projekto-pavadinimas (atidaro nurodyt? laravel projekt?);
+3.  phpMyAdmin: susikurti nauj? duomen? baz? utf8mb4_unicode_ci ;
+4. Projekte: .env > DB_DATABASE pervadinti ? susikurtos db pavadinim? (be kabu?i?. sujungia su sukurta db);
+5. config>database.php>'engine' => 'InnoDB', (nurodo db tip?, šiuo atveju local server db);
+6. Terminale: php artisan make:model Lentel?s_pavadinimas(vienaskaita) --all (sukuria model?, kuris sukurs duomen? baz?j nauj? lental? pvz. modelis Client, lentel? bus clients. Kiekvienam naujam modeliui atskira komanda terminale);
+7.database>migrations>(reikalinga lental?) ? create 'lentel?s pavadinimas' f-cija supildyti reikiamus sukurti stulpelius.
+$table->kintamojo r?šis('stulpelio pavadinimas');
+pvz. $table->string('name');
+pvz. $table->string('image_url', 300);  nurodo kiek simboli? gali tur?ti string'as,
+text -neapriboja simboli? kiekio,
+bigInteger - gali tur?ti neigiamas reikšmes,
+unsignedBigInteger - tik teigiami skai?iai (naudoti su foreign keys stulpeliais, kuri? primary key yra nurodyti atributai 'unsigned';
+jei stulpelis yra foreign key, b?tina nurodyti jo ryš?
+pvz.  $table->foreign('type_id')->references('id')->on('types'); 
+SVARBU!!! file'ai migrations foldery turi eiti herarchine tvarka t.y. pirma turi b?ti sukuriama lentel? su primary key, o tik tada lentel? su foreign key. Tod?l file'? pavadinimai turi tur?t chronologin? sek?.
+8.  Terminale: php artisan migrate:fresh (sukuria db nurodytuose lentel?se nurodytus stulpelius)
+9. routes>web.php (sukurti nuorodas resursams, kiekvienam modeliui atskirai)
+('folderio_pavadinimas' tai yra url kelias po domeno (pvz. www.adresas.com/folderio_pavadinimas), kuris bus toks, koks b?tent nurodytas šitam prefix'e, o ne koks iš tikro bus folderio pavadinimas su dokumentais.)
+Route::prefix('folderio_pavadinimas')->group(function() {
+(viduj šios funkcijos nurodomi tikrieji keliai ir j? sutrumpinti pavadinimas. Žemiau nurodytu atveju: 
+get yra duomen? gavimo metodas (gali b?ti post, jei reikia kokio kintamojo)
+'', rodo, kad po prefex'o daugiau nieko n?ra ('create', reikšt? www.adresas.com/folderio_pavadinimas/create), 
+('update/{variable}' taip aprašomas route'as, kuris perduoda kartu ir kintam?j?, bet naudojams tik su post)
+kelias iki kontrolerio failo @index rodo ? kur? controlerio metod? kreiptis
+ ->name('author.index) parodo kaip sutrumpintai kreiptis ? kontrolerio metod?. Galima naudoti tiek kituose controlerio metoduose tiek blade faile pvz. <a href="{{ route('author.index') }}"
+Route::get('', 'App\Http\Controllers\FolderiopavadinimasController@index')->name('author.index);
+...;
+ir t.t.
+});
+10. (vaizdo dokumentai arba blade file'ai): resources>views>routes>susikurti nauj? aplankal? atitinkant? metod? pvz. jei db lentel? clients tai failas 'client', kuriame bus saugomi su tuo metodu susi?j? CRUD file'ai.
+file'ai užvadinami kaip ir route'ai pvz. index.bade.php 
+?ia viskas rašoma html. jei reikia ?terpti php, galima tai daryti:
+tarp dvigub? riestini? skriaust? {{$kintamasis}}
+tarp blade sintaks?s pvz. @foreach @endforeach, @if @else @endif
+formose b?tina rašyti @csrf, kuris apsaugo forma nuo išorinio pakeitimo (be jo neleis submitint formos)
+formuose vengti kintam?j? varduose naudoti daugiau nei vien? lower dash simbol?.
+11. app>Http>Controllers>reikiamo metodo kontroleris apsirašyti visus reikalingus metodus. Jau yra pagrindas visiems CRUD metodams.
+public function index()
+    {
+        $students = Student::all();
+        return view('student.index', ['students' => $students]);
+    }
+Šitas metodas ? $students kintam?j? patalpin? vis? students lentel? iš db (nurodytas modelis ir bazin? laravelio funkcija.  Ir tada gražina blade file'? students/index kartu su masyvu 'students', kur? sudaro aukš?iau nurodytas $students kintamasis. 
+Logika: 
+naršykl?j rašom serverio kelias/students (jei route frefix'as yra 'students')
+route web file'as parodo, kok? metod? atlikti iš reikiamo modelio controlerio file'o
+controller file'as daro loginius veiksmus pvz. šiuo atveju susigr?žina reikšmes iš db ir nurodo keli? ? reikiam? blade file'? ir dar kartu siun?ia nurodyt? masyv? su duomenimis, kurie bus prieinami blade file'e.
+naršykl? atidaro blade file'o html'?
+12. Viršuje controller file'o b?tina nurodyti kokius modelius ir bibliotekas naudosime.
+pvz. jei noriu naudoti ne tik Student modelio duomenis, o ir School tai viršuje prisidedu
+use App\Models\School;  (pvzjei noriu naudoti kažkius duomenis iš db lentel?s, kur yra primary key, kuris atitinka modelio foreign key)
+Taip pat ?rašymui/atnaujinimui b?tina biblioteka
+use Illuminate\Http\Request;
 
-## About Laravel
+DATA FACTORIES:
+1. database>factories> pasirikti reikalingo modelio factory, susikurti šablon?, galima naudoti faker metodus.
+2. database>seeders> pasirinkti reikalingo modelio seeder,
+?traukti reikalingo modelio nuorod? dokumento viršuje,
+metode run() ?rašyti factory paleidim?
+pvz. Student::factory()->count(30)->create(); (,kuris sukurs 30 nauj? eilu?i? lentel?je students). Jeigu reikia naudoti tikslingus duomenis, juos iškarto rašyti ? seeders file'?:
+pvz.
+DB::table('types')->insert([
+            'name' => 'Mažoji bendrija',
+            'short_name' => 'MB',
+            'description' => 'ribota atsakomyb?'
+        ]);
+3. database>seeders>DatabaseSeeder.php surašyti visus seeders failus, kurius mums reikia paleisti, nes tik šis file'as išsišaukia iš terminalo naudojant komand?
+php artisan migrate:fresh --seed
+pvz. 
+$this->call([
+StudentSeeder::class
+]); (tik viršuje file'o reikia prid?ti nuorodas ? visus naudojamus modelius pvz. 
+use App\Models\Student;
+SVARBU! Seeders file'? eiliškumas turi b?ti toks, kad vis? laik pirma pildyt?si  lentel?s su primary keys, o po to su foreign keys.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[CMS Max](https://www.cmsmax.com/)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-- **[Romega Software](https://romegasoftware.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
